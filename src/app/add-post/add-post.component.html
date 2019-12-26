@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<div class="container-fluid bg">
+  <div class ="row">
+    <div class="container">
+      <div class="col-10 col-sm-10 col-md-12 ">
+        <h1 style="text-align: center;color:white"><b>ADD BLOG</b></h1>
+    <form action="add-product" class="was-validated mt-5">
+      <div class="form-group">
+        <label class="text-white" for="title">Add Blog Title</label>
+        <input type="text" class="form-control" id="title" placeholder="Enter Blog Title" [(ngModel)]="blog.title" name="title" required>
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="text-white" for="content">Add Blog Content here</label>
+        <textarea class="form-control" id="content" rows="10" placeholder="Enter Blog content here." name="content" [(ngModel)]="blog.content" required></textarea>
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
+      </div>
+
+      <button type="submit" class="btn btn-info mt-3 mb-3 w-100" (click)="addBlog()">Add Post/Blog</button>
+    </form>
+  </div>
+    </div>
+</div>
+</div>
+

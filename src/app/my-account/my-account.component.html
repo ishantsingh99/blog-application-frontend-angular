@@ -1,0 +1,106 @@
+<app-navbar (childEvent)="this.blogs=$event"></app-navbar>
+<div class="container-fluid bg" style="padding-bottom: 100px;">
+  <div class="container-fluid bg" >
+    <div class="row">
+      <div class="container">
+        <div class="col-10 col-sm-10 col-md-12 ">
+          <div class="row">
+            <div class="col-7">
+              <form class="form-inline">
+                <input class="form-control mr-sm-1" size="50" type="text" placeholder="Search for any user" [(ngModel)]="searchedItem" [ngModelOptions]="{ standalone:true }">
+                <button class="btn btn-secondary text-white" type="submit" (click)="searchOnClick()"><i class="fa">&#xf002;</i>&nbsp;Search</button>
+              </form>
+            </div>
+            <div class="col-5 justify-content-center">
+              <button class="btn btn-info " (click)="seeFollowers()">
+                <span class="glyphicon glyphicon-save"></span> Followers
+              </button>
+              <button class="btn btn-info" style="margin-left:40px" (click)="seeFollowing()">
+                <span class="glyphicon glyphicon-open"></span> Following
+              </button>
+              <button class="btn btn-info" style="margin-left:40px" (click)="selectFollowers()">
+                <span class="glyphicon glyphicon-edit"></span> Create Group
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><hr>
+  </div>
+
+          <div class="row">
+    <div class="col-sm-4">
+      <div class="mt-4 mb-4" style="padding-right: 60px; padding-left: 60px;">
+        <div class="card" style="width: 400px;">
+          <div class="card-header bg-white">
+            <div style="margin-left: 100px;">
+              <h2 style="margin-left: -50px;" class="font1"><i class="fa p-1">&#xf2c1;&nbsp;</i>{{user.name}}</h2>
+              <small class="text-center text-muted">{{user.role}}</small>
+            </div>
+          </div>
+          <div class="card-body">
+            <b><i class="fa p-1">&#xf199;&nbsp;</i>Email</b><br>
+            <span class="ml-3">{{user.email}}</span><br><br>
+            <b><i class="fa p-1">&#xf2b9;&nbsp;</i>Contact</b><br>
+            <i class="fas fa-phone-alt"></i><span class="ml-3">{{user.mobileNo}}</span><br><br>
+            <b><i class="fa p-1">&#xf228;&nbsp;</i>Gender</b><br>
+            <i class="fas fa-book-dead"></i><span class="ml-3">{{user.gender}}</span><br><br>
+            <b><i class="fa p-1">&#xf044;&nbsp;</i>Number of Posts</b><br>
+            <i class="fas fa-book-dead"></i><span class="ml-3">{{blogs.length}}</span><br><br>
+          </div>
+        </div>
+          </div>
+        </div>
+
+    <div class="col-sm-8">
+      <div class="row">
+        <div class="col-sm-12 mt-3">
+
+          <div class="bg-white m-2 p-3 mb-4" *ngFor="let blog of blogs.slice().reverse()">
+            <div class="d-flex">
+              <div>
+                <div class="font-weight-bold" style="font-size: 20px;">{{blog.title}}</div>
+                <small class="font-weight text-black-50">Author:-{{blog.userId.name}}</small>
+              </div>
+              <div class="ml-auto">
+                <div class="dropdown dropleft float-right" *ngIf="currentUser == blog.userId.email">
+                  <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                    Options
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" (click)="editBlog(blog.postId)">Edit</a>
+                    <a class="dropdown-item" *ngIf="blog.private==true; else privateElse;" (click)="makePublic(blog.postId)">Make Public</a>
+                    <ng-template #privateElse>
+                      <a class="dropdown-item" (click)="makePrivate(blog.postId)">Make Private</a>
+                    </ng-template>
+                    <a class="dropdown-item" (click)="deleteBlog(blog.postId)">Delete</a>
+                  </div>
+                </div>
+                <div>
+                  <small class="text-dark"><i class="fa p-1">&#xf0ac;&nbsp;</i>{{blog.date | date: 'shortDate'}}</small>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <p class="pb-3">{{blog.content}}</p>
+            <hr>
+            <div class="mt-2 d-flex">
+              <div>
+                <textarea class="bg-light" cols="110" id="comment" name="comment" placeholder="Post comment here." [(ngModel)]="userComment.comment"></textarea>
+              </div>
+              <div class="ml-auto">
+                <button class="btn btn-secondary" (click)="postComment(userComment.comment, blog)">Post</button>
+              </div>
+            </div>
+            <small><a (click)="viewPost(blog.postId)">View Comments</a></small>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+

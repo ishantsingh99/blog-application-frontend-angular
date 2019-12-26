@@ -1,0 +1,94 @@
+<app-navbar (childEvent)="this.blogs=$event"></app-navbar>
+<div class="container-fluid bg" style="padding-bottom: 100px;">
+  <div class="row">
+    <div class="container">
+      <div class="col-10 col-sm-10 col-md-12 ">
+        <div class="row">
+          <div class="col-7">
+            <form class="form-inline">
+              <input class="form-control mr-sm-1" size="50" type="text" placeholder="Search for any user" [(ngModel)]="searchedItem" [ngModelOptions]="{ standalone:true }">
+              <button class="btn btn-secondary text-white" type="submit" (click)="searchOnClick()"><i class="fa">&#xf002;</i>&nbsp;Search</button>
+            </form>
+          </div>
+          <div class="col-5 justify-content-center">
+            <button class="btn btn-info " (click)="seeFollowers()">
+              <span class="glyphicon glyphicon-save"></span> Followers
+            </button>
+            <button class="btn btn-info" style="margin-left:40px" (click)="seeFollowing()">
+              <span class="glyphicon glyphicon-open"></span> Following
+            </button>
+            <button class="btn btn-info" style="margin-left:40px" (click)="selectFollowers()">
+              <span class="glyphicon glyphicon-edit"></span> Create Group
+            </button>
+          </div>
+        </div><hr>
+
+
+        <div class="row m-1" >
+          <div class="col-sm-12 bg-white mb-2 p-3" *ngFor="let user of searchedUsers" style="padding-right: 70px; padding-left: 70px;">
+            <div class="d-flex">
+              <div>
+                <div>
+                  <b><i class="fa p-1 mr-3">&#xf007;&nbsp;</i>{{user.name}}</b>
+                </div>
+                <small>{{user.email}}</small>
+              </div>
+              <div class="ml-auto">
+                <button class="btn btn-outline-primary btn-sm" (click)="viewProfile(user.userId)">View Profile</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-12 mt-3">
+            <div *ngFor="let blog of blogs.slice().reverse(); let i = index">
+              <div *ngIf="blog.private==false">
+                <div class="bg-white m-2 p-3 mb-4" *ngIf="blog.userId.userId == user.userId || checkFollowing(blog.userId.userId)">
+                  <div class="d-flex">
+                    <div>
+                      <div class="font-weight-bold" style="font-size: 20px;">{{blog.title}}</div>
+                      <small class="font-weight text-black-50">Author:-<a class="text-primary" data-toggle="tooltip" title="View User" (click)="viewProfile(blog.userId.userId)">{{blog.userId.name}}</a></small>
+                    </div>
+                    <div class="ml-auto">
+                      <div class="dropdown dropleft float-right" *ngIf="currentUser == blog.userId.email || role == 'admin'" >
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle mr-3" data-toggle="dropdown">
+                          Options
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" (click)="editBlog(blog.postId)">Edit</a>
+                          <a class="dropdown-item" *ngIf="blog.private==true; else privateElse;">Make Public</a>
+                          <ng-template #privateElse>
+                            <a class="dropdown-item" (click)="makePrivate(blog.postId)">Make Private</a>
+                          </ng-template>
+                          <a class="dropdown-item" (click)="deleteBlog(blog.postId)">Delete</a>
+                        </div>
+                      </div>
+                      <div>
+                        <small class="text-dark"><i class="fa p-1">&#xf0ac;&nbsp;</i>{{blog.date | date: 'shortDate'}}</small>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <p class="pb-3">{{blog.content}}</p>
+                  <hr>
+                  <!--<div class="mt-2 d-flex">
+                    <div>
+                      <textarea class="bg-light" cols="110" name="blog.{{i}}.title" ngDefaultControl placeholder="Post comment here." [(ngModel)]="userComment.comment" [ngModelOptions]="{standalone: true}"></textarea>
+                    </div>
+                    <div class="ml-auto">
+                      <button class="btn btn-secondary" (click)="postComment(userComment.comment, blog)">Post</button>
+                    </div>
+                  </div>-->
+                  <small><a (click)="viewPost(blog.postId)">View Comments or make Comments</a></small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
